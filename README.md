@@ -18,6 +18,18 @@ vstest.console tests\WinVOIE.Tests\bin\Release\WinVOIE.Tests.dll
 `dotnet build` ne convient pas : il ne restaure pas `packages.config` et échoue sur les `.resx` contenant des images.
 Le projet d'installation `Setup/Setup.vdproj` ne se compile qu'avec Visual Studio et l'extension « Installer Projects ».
 
+## Installer sur un poste
+
+Les accès maintenance (profils `SUPERVISEUR` et `SAV`) exigent le fichier `C:\WVOIE\PARAMETRES\acces.par`,
+qui ne contient que des empreintes de mots de passe. Le créer en administrateur, une fois par profil :
+
+```powershell
+powershell -File outils\creer-acces.ps1 -Profil SUPERVISEUR
+powershell -File outils\creer-acces.ps1 -Profil SAV
+```
+
+Aucun mot de passe n'est stocké dans le dépôt ni dans le programme.
+
 ## Composants tiers hors NuGet
 
 Invisibles pour Dependabot et pour le SBOM CycloneDX : à déclarer à la main.
