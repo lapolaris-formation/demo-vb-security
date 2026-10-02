@@ -7,6 +7,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WinVOIE", "WinVOIE\WinVOIE.
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{9E1D4F72-2B6C-4A8E-B3D5-17C0A9E6F481}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WinVOIE.Tests", "tests\WinVOIE.Tests\WinVOIE.Tests.vbproj", "{7B2E4C19-5D3A-4F86-A0C1-9E8D6B3F2A54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,14 @@ Global
 		{9E1D4F72-2B6C-4A8E-B3D5-17C0A9E6F481}.Release|Any CPU.Build.0 = Release
 		{9E1D4F72-2B6C-4A8E-B3D5-17C0A9E6F481}.Release|x64.ActiveCfg = Release
 		{9E1D4F72-2B6C-4A8E-B3D5-17C0A9E6F481}.Release|x64.Build.0 = Release
+		{7B2E4C19-5D3A-4F86-A0C1-9E8D6B3F2A54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B2E4C19-5D3A-4F86-A0C1-9E8D6B3F2A54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B2E4C19-5D3A-4F86-A0C1-9E8D6B3F2A54}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7B2E4C19-5D3A-4F86-A0C1-9E8D6B3F2A54}.Debug|x64.Build.0 = Debug|Any CPU
+		{7B2E4C19-5D3A-4F86-A0C1-9E8D6B3F2A54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B2E4C19-5D3A-4F86-A0C1-9E8D6B3F2A54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B2E4C19-5D3A-4F86-A0C1-9E8D6B3F2A54}.Release|x64.ActiveCfg = Release|Any CPU
+		{7B2E4C19-5D3A-4F86-A0C1-9E8D6B3F2A54}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

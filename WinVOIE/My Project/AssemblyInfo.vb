@@ -1,6 +1,7 @@
 ﻿Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
+Imports System.Runtime.CompilerServices
 
 ' Les informations générales relatives à un assembly dépendent de 
 ' l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
@@ -16,6 +17,9 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
+
+'Les modules (Friend) restent accessibles au projet de tests unitaires
+<Assembly: InternalsVisibleTo("WinVOIE.Tests")>
 
 'Le GUID suivant est pour l'ID de la typelib si ce projet est exposé à COM
 <Assembly: Guid("b41e9c37-5a2d-4f86-9c13-7e0d2a6b58f4")> 

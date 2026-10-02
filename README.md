@@ -10,6 +10,9 @@ Prérequis : Visual Studio 2022 17.14 (ou MSBuild de Visual Studio), .NET Framew
 ```powershell
 msbuild WinVOIE.sln -t:restore -p:RestorePackagesConfig=true
 msbuild WinVOIE.sln -p:Configuration=Release -m
+
+# Tests unitaires (xUnit, projet tests\WinVOIE.Tests)
+vstest.console tests\WinVOIE.Tests\bin\Release\WinVOIE.Tests.dll
 ```
 
 `dotnet build` ne convient pas : il ne restaure pas `packages.config` et échoue sur les `.resx` contenant des images.

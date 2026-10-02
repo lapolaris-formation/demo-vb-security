@@ -1,0 +1,38 @@
+name: Build WinVOIE
+
+on:
+  push:
+    branches: [ main, 'release/**' ]
+  pull_request:
+    branches: [ main, 'release/**' ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    # .NET Framework 4.8 + resx binaires (icônes/images) => MSBuild "complet" de Visual Studio obligatoire.
+    # "dotnet build" échoue (MSB3822 / MSB3823), exactement comme sur le projet d'origine.
+    runs-on: windows-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v7
+
+      - name: Installer MSBuild
+        uses: microsoft/setup-msbuild@v3
+
+      # dotnet restore ne lit pas packages.config : c'est MSBuild qui restaure (sans nuget.exe)
+      - name: Restaurer les paquets (packages.config)
+        run: msbuild WinVOIE.sln -t:restore -p:RestorePackagesConfig=true
+
+      - name: Compiler
+        # Le projet Setup (.vdproj) n'est pas supporté par MSBuild => warning MSB4078 attendu
+        run: msbuild WinVOIE.sln -p:Configuration=Release "-p:Platform=Any CPU" -m
+
+      - name: Téléverser les binaires
+        uses: actions/upload-artifact@v7
+        with:
+          name: winvoie-${{ github.sha }}
+          path: WinVOIE/bin/Release/
+          retention-days: 90
