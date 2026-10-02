@@ -1,0 +1,31 @@
+# Dependabot : mises à jour de version (PR hebdo) pour NuGet (packages.config) et GitHub Actions.
+# Les alertes de vulnérabilité + "security updates" s'activent dans Settings > Code security.
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directories:                   # un packages.config par projet : chaque dossier doit être listé
+      - "/WinVOIE"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 10
+    labels: [ "dependances" ]
+    commit-message:
+      prefix: "build"
+      include: "scope"
+    # Décommenter pour regrouper les PR (moins de bruit) - à montrer APRÈS avoir vu le volume brut
+    # groups:
+    #   microsoft-extensions:
+    #     patterns: ["Microsoft.Extensions.*", "Microsoft.Bcl.*"]
+    #   system-polyfills:
+    #     patterns: ["System.*"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "ci"
+    labels: [ "dependances", "ci" ]
