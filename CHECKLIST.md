@@ -62,7 +62,7 @@ Légende : `[x]` fait et vérifié, `[ ]` à faire.
 - **P. Politique de sécurité**
   - [x] `SECURITY.md` : versions prises en charge, canal privé, délais (à valider par la direction) : PR de l'issue #15
 - **Q. Nettoyage**
-  - [ ] Fichiers parasites retirés (`ile.cs`, `temp_enreg.vb`)
+  - [x] Fichiers parasites retirés (`ile.cs`, `temp_enreg.vb`) : PR de l'issue #15
 - **R. Mots de passe en dur**
   - [ ] Constat : `Frm_util_Menu.vb:13` et `Frm_Reglage_Zero_Statique.vb:68` comparent la saisie à des mots de passe écrits dans le code (aucun outil ne les voit)
   - [ ] Mots de passe sortis du code et changés, décision écrite

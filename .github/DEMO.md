@@ -126,5 +126,5 @@ et commente la PR. Si on merge quand même → alerte Dependabot + PR de correct
 | Clé de « signature » des fichiers en dur dans le code | `Verification_CRC.vb` |
 | Détail complet des exceptions (stack trace, poste, utilisateur) affiché à l'opérateur | `Frm_Exception.vb` |
 | Chemin perso d'un développeur dans le projet | `WinVOIE.vbproj` (`PublishUrl`) |
-| DLL binaires versionnées, fichiers parasites à la racine (`ile.cs`, `temp_enreg.vb`) | racine, `WinVOIE\dll` |
+| DLL binaires versionnées ; fichiers parasites à la racine (`ile.cs`, `temp_enreg.vb`, retirés par la PR de l'issue #15) | `WinVOIE\dll`, racine |
 | Référence `System.ValueTuple` absente de `packages.config` ; `ConvertToUTF8BOM.ps1` référencé mais absent ; `OptionsFileService.vb` présent mais non compilé | `WinVOIE.vbproj` |
