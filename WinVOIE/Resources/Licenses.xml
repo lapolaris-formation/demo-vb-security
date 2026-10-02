@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LISTE DES LIBRAIRIES TIERCES UTILISEES PAR WINVOIE -->
+<licences>
+  <librairie nom="Newtonsoft.Json" version="13.0.4" licence="MIT">
+    <url>https://www.newtonsoft.com/json</url>
+  </librairie>
+  <librairie nom="PDFsharp" version="6.2.4" licence="MIT">
+    <url>https://www.pdfsharp.com</url>
+  </librairie>
+  <librairie nom="MathNet.Numerics" version="5.0.0" licence="MIT">
+    <url>https://numerics.mathdotnet.com</url>
+  </librairie>
+  <librairie nom="TwinCAT.Ads" version="4.3.30" licence="Beckhoff">
+    <url>https://www.beckhoff.com</url>
+  </librairie>
+</licences>
