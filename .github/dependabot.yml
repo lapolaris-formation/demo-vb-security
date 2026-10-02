@@ -5,6 +5,7 @@ updates:
   - package-ecosystem: "nuget"
     directories:                   # un packages.config par projet : chaque dossier doit être listé
       - "/WinVOIE"
+      - "/tests/WinVOIE.Tests"
     schedule:
       interval: "weekly"
       day: "monday"
