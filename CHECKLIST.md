@@ -60,7 +60,7 @@ Légende : `[x]` fait et vérifié, `[ ]` à faire.
 - **O. Analyse de code**
   - [x] Analyseurs Roslyn et DevSkim sur `main` : 55 alertes dans Code scanning
 - **P. Politique de sécurité**
-  - [ ] `SECURITY.md` : versions prises en charge, canal privé, délais (à valider par la direction)
+  - [x] `SECURITY.md` : versions prises en charge, canal privé, délais (à valider par la direction) : PR de l'issue #15
 - **Q. Nettoyage**
   - [ ] Fichiers parasites retirés (`ile.cs`, `temp_enreg.vb`)
 - **R. Mots de passe en dur**
