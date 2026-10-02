@@ -31,3 +31,7 @@ trim_trailing_whitespace = false
 # Fichiers YAML (workflows, dependabot)
 [*.{yml,yaml}]
 indent_size = 2
+
+# Gitleaks refuse un fichier de configuration avec BOM
+[{.gitleaks.toml,.gitleaksignore}]
+charset = utf-8
