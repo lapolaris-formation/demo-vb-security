@@ -1,0 +1,95 @@
+# Checklist de mise en place du dépôt
+
+Suivi de la procédure du `README.md` sur ce dépôt, de A à Z, dans l'ordre logique (jours 1 à 5).
+**Une étape se coche dans la pull request qui la réalise**, avec sa preuve : numéro de PR, commit ou réglage vérifié.
+Une étape faite uniquement dans les réglages GitHub se coche dans la PR suivante.
+
+Légende : `[x]` fait et vérifié, `[ ]` à faire.
+
+## Fondations (jours 1 et 2)
+
+- **A. Poste**
+  - [x] Identité des commits : `LaPolaris`, adresse noreply
+  - [x] Second compte relecteur (`ladel1`) : l'auteur n'approuve jamais sa propre PR
+- **B. Organisation `lapolaris-formation`**
+  - [x] Équipes `developpeurs` (Write) et `responsables` (Maintain) ajoutées au dépôt : approbation de `ladel1` comptée « for developpeurs and responsables » (PR #13)
+  - [ ] Authentification à deux facteurs exigée pour l'organisation (Settings de l'organisation, Authentication security)
+- **C. Dépôt et premier push**
+  - [x] Dépôt créé vide, seul push direct sur `main` : `625f19e`, `5602e08`, `42cae6b`
+- **D. Fichiers d'hygiène**
+  - [x] `.gitattributes`, `.editorconfig`, `.gitignore` dans le premier commit (`625f19e`)
+  - [x] Aucune clé ni certificat suivi : `git ls-files "*.pfx" "*.snk"` vide
+  - [x] Aucun marqueur de conflit : `git grep -n "<<<<<<<\|>>>>>>>"` vide
+- **E. README**
+  - [x] Compilation, livraison, liste des DLL hors NuGet (`42cae6b`)
+- **F. Réglages des pull requests**
+  - [x] Merge commit seul (« Merge pull request #3 », « #13 »), branches supprimées après fusion
+- **G. Ruleset `protection-main`**
+  - [x] Cibles `main` et `release/**`, bypass list vide
+  - [x] 1 approbation, approbations périmées annulées, Code Owners, résolution des fils, merge seul
+  - [ ] Démo : `git push` direct sur `main` refusé (`GH013`), propriétaire compris
+- **H. Labels**
+  - [x] Nature, priorité, outillage (`dependances`, `ci`) ; labels par défaut supprimés
+- **I. Fichiers de collaboration (PR #3, issue #1)**
+  - [x] CODEOWNERS, modèle de PR, modèles d'issue anomalie et évolution
+  - [x] Constat : la PR qui installe le modèle a un formulaire vide ; la suivante (#13) est pré-remplie
+  - [x] Revue des `responsables` demandée automatiquement sur `.github/` (PR #13)
+  - [ ] Démo : décocher « Require review from Code Owners », constater que la PR fusionne sans eux, recocher
+
+## Intégration continue (jour 3)
+
+- **J. Pipeline (PR #13, issue #2)**
+  - [x] Projet de tests séparé `tests/WinVOIE.Tests`, 2 tests sur `Fichier_Enreg_Modifie`
+  - [x] Workflows `build` et `tests` sur `main` et `release/**`, binaires et `.trx` en artefact
+  - [x] 7 contrôles verts dès la première exécution
+- **K. Contrôles requis**
+  - [x] `build`, `tests`, `revue-dependances` exigés dans le ruleset
+- **L. Démo : PR cassée bloquée**
+  - [ ] PR qui casse `Calcul_Signature` : `tests` rouge, fusion impossible malgré l'approbation
+
+## Sécurité (jour 4)
+
+- **M. Advanced Security**
+  - [x] Dependency graph, Dependabot alerts, Dependabot security updates
+  - [x] Private vulnerability reporting activé (dépôt public)
+  - [ ] Dependabot malware alerts
+  - [ ] Secret Protection, puis Push protection
+- **N. Dependabot**
+  - [x] `dependabot.yml` : NuGet (`/WinVOIE`, `/tests/WinVOIE.Tests`) et actions, préfixes `build`/`ci`, label `dependances`
+  - [x] Premières PR ouvertes, conformes à la convention (#4 à #12, #14)
+- **O. Analyse de code**
+  - [x] Analyseurs Roslyn et DevSkim sur `main` : 55 alertes dans Code scanning
+- **P. Politique de sécurité**
+  - [x] `SECURITY.md` : versions prises en charge, canal privé, délais (à valider par la direction) : PR de l'issue #15
+- **Q. Nettoyage**
+  - [x] Fichiers parasites retirés (`ile.cs`, `temp_enreg.vb`) : PR de l'issue #15
+- **R. Mots de passe en dur**
+  - [ ] Constat : `Frm_util_Menu.vb:13` et `Frm_Reglage_Zero_Statique.vb:68` comparent la saisie à des mots de passe écrits dans le code (aucun outil ne les voit)
+  - [ ] Mots de passe sortis du code et changés, décision écrite
+- **S. Détection de secrets**
+  - [ ] Job Gitleaks (outil lancé directement), `.gitleaks.toml` pour les mots de passe de chaîne de connexion
+- **T. Démo A : paquet vulnérable**
+  - [ ] Newtonsoft.Json 12.0.3 sur une branche : `NU1903` au restore, `revue-dependances` rouge, PR bloquée
+- **U. Démo B : push protection**
+  - [ ] Faux secret au format fournisseur refusé au push ; mot de passe sans marqueur non vu
+- **V. Tri des PR Dependabot**
+  - [ ] `@dependabot rebase` pour que les contrôles s'exécutent
+  - [ ] Qualification : `bindingRedirect` figés dans `app.config` (#6, #11), décision écrite dans une issue
+  - [ ] Regroupement des mises à jour mineures et correctives (`groups`)
+- **W. Tri des alertes Code scanning**
+  - [ ] DevSkim « DES » : faux positifs (mot français), *Dismiss → False positive*
+  - [ ] CA3075 (`XmlDocument.Load`) : corrigé
+  - [ ] CA1031, CA2000 : décision écrite (*Won't fix* ou plan)
+
+## Livraison (jours 4 et 5)
+
+- **X. Version**
+  - [ ] Format `vMAJEUR.MINEUR.CORRECTIF` décidé (actuel : `L_WVOIE_UNI_6_73h`)
+  - [ ] `AssemblyVersion` alignée (actuellement `1.0.0.0`), `CHANGELOG.md` à jour
+- **Y. Release**
+  - [ ] Workflow sur tag `v*` : binaire construit depuis le tag, SBOM CycloneDX (+ DLL TwinCAT et Fde ajoutées à la main), attestation de provenance, release
+  - [ ] Tag `v6.73.0` posé, release publiée avec binaire et SBOM
+  - [ ] Signature horodatée avec certificat de test (à la main, hors pipeline)
+- **Z. Charte et plan**
+  - [ ] `docs/charte-git.md` adoptée par PR
+  - [ ] Plan d'action CRA daté, responsables nommés
