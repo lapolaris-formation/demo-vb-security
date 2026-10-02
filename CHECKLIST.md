@@ -64,8 +64,8 @@ Légende : `[x]` fait et vérifié, `[ ]` à faire.
 - **Q. Nettoyage**
   - [x] Fichiers parasites retirés (`ile.cs`, `temp_enreg.vb`) : PR de l'issue #15
 - **R. Mots de passe en dur**
-  - [ ] Constat : `Frm_util_Menu.vb:13` et `Frm_Reglage_Zero_Statique.vb:68` comparent la saisie à des mots de passe écrits dans le code (aucun outil ne les voit)
-  - [ ] Mots de passe sortis du code et changés, décision écrite
+  - [x] Constat : `Frm_util_Menu.vb:13` et `Frm_Reglage_Zero_Statique.vb:68` comparaient la saisie à des mots de passe écrits dans le code (trouvé par `git grep`, aucun outil ne les voit)
+  - [x] Mots de passe sortis du code : empreintes PBKDF2 dans `acces.par`, créé par `outils/creer-acces.ps1` ; anciens mots de passe abandonnés ; 5 tests (issue #17)
 - **S. Détection de secrets**
   - [ ] Job Gitleaks (outil lancé directement), `.gitleaks.toml` pour les mots de passe de chaîne de connexion
 - **T. Démo A : paquet vulnérable**

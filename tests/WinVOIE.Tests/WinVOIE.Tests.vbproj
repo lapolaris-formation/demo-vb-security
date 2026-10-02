@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="Controle_Acces_Tests.vb" />
     <Compile Include="Verification_CRC_Tests.vb" />
   </ItemGroup>
   <ItemGroup>

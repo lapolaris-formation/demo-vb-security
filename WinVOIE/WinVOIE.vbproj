@@ -262,6 +262,7 @@
     <Compile Include="Module\AutocontroleDAO\WindowsFontResolver.vb" />
     <Compile Include="Module\Communication_beckhoff.vb" />
     <Compile Include="Module\ContextZip.vb" />
+    <Compile Include="Module\Controle_Acces.vb" />
     <Compile Include="Module\ExceptionHandler.vb" />
     <Compile Include="Module\Filtre_DAO_NAO\FiltreDaoCalcul.vb" />
     <Compile Include="Module\initialisation.vb" />

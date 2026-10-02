@@ -65,7 +65,7 @@
 
         Dim frm_psw As New Frm_MotDePasse
         If frm_psw.ShowDialog() = Windows.Forms.DialogResult.OK Then '1
-            If PSW_saisie = "FERROSUP" Or PSW_saisie = "ferrosup" Or PSW_saisie = "FERRODEMO" Or PSW_saisie = "ferrodemo" Then '2
+            If Mot_De_Passe_Valide(PSW_saisie, {PROFIL_SUPERVISEUR}) Then '2
 
                 reponse = MsgBox("Enregistrer les nouveaux zéros ?", MsgBoxStyle.YesNo)
                 If reponse = MsgBoxResult.Yes Then '3
