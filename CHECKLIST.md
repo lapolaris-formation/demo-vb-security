@@ -13,7 +13,7 @@ Légende : `[x]` fait et vérifié, `[ ]` à faire.
   - [x] Second compte relecteur (`ladel1`) : l'auteur n'approuve jamais sa propre PR
 - **B. Organisation `lapolaris-formation`**
   - [x] Équipes `developpeurs` (Write) et `responsables` (Maintain) ajoutées au dépôt : approbation de `ladel1` comptée « for developpeurs and responsables » (PR #13)
-  - [ ] Authentification à deux facteurs exigée pour l'organisation (Settings de l'organisation, Authentication security)
+  - [ ] Authentification à deux facteurs exigée pour l'organisation : **non appliquée, décision** : l'exiger retirerait de l'organisation les membres sans 2FA (`ladel1`). À activer dès que chaque membre l'a configurée
 - **C. Dépôt et premier push**
   - [x] Dépôt créé vide, seul push direct sur `main` : `625f19e`, `5602e08`, `42cae6b`
 - **D. Fichiers d'hygiène**
@@ -44,6 +44,7 @@ Légende : `[x]` fait et vérifié, `[ ]` à faire.
   - [x] 7 contrôles verts dès la première exécution
 - **K. Contrôles requis**
   - [x] `build`, `tests`, `revue-dependances` exigés dans le ruleset
+  - [ ] `issue-liee` et `detection-secrets` exigés (après la fusion de la PR de l'issue #19)
 - **L. Démo : PR cassée bloquée**
   - [ ] PR qui casse `Calcul_Signature` : `tests` rouge, fusion impossible malgré l'approbation
 
@@ -52,8 +53,8 @@ Légende : `[x]` fait et vérifié, `[ ]` à faire.
 - **M. Advanced Security**
   - [x] Dependency graph, Dependabot alerts, Dependabot security updates
   - [x] Private vulnerability reporting activé (dépôt public)
-  - [ ] Dependabot malware alerts
-  - [ ] Secret Protection, puis Push protection
+  - [x] Dependabot malware alerts
+  - [x] Secret Protection, puis Push protection
 - **N. Dependabot**
   - [x] `dependabot.yml` : NuGet (`/WinVOIE`, `/tests/WinVOIE.Tests`) et actions, préfixes `build`/`ci`, label `dependances`
   - [x] Premières PR ouvertes, conformes à la convention (#4 à #12, #14)
@@ -67,7 +68,10 @@ Légende : `[x]` fait et vérifié, `[ ]` à faire.
   - [x] Constat : `Frm_util_Menu.vb:13` et `Frm_Reglage_Zero_Statique.vb:68` comparaient la saisie à des mots de passe écrits dans le code (trouvé par `git grep`, aucun outil ne les voit)
   - [x] Mots de passe sortis du code : empreintes PBKDF2 dans `acces.par`, créé par `outils/creer-acces.ps1` ; anciens mots de passe abandonnés ; 5 tests (issue #17)
 - **S. Détection de secrets**
-  - [ ] Job Gitleaks (outil lancé directement), `.gitleaks.toml` pour les mots de passe de chaîne de connexion
+  - [x] Job `detection-secrets` : Gitleaks 8.30.1 lancé directement, empreinte SHA-256 vérifiée, tout l'historique (issue #19)
+  - [x] `.gitleaks.toml` : 3 règles maison (comparaison en dur, configuration mail, chaîne de connexion), testées sur exemples positifs et négatifs
+  - [x] `.gitleaksignore` : 2 trouvailles historiques acquittées, décision #17/#18 ; fichiers confiés aux `responsables`
+  - [x] Lien vers une issue obligatoire dans chaque PR : job `issue-liee` (cas de la PR #18, `Closes #` sans numéro)
 - **T. Démo A : paquet vulnérable**
   - [ ] Newtonsoft.Json 12.0.3 sur une branche : `NU1903` au restore, `revue-dependances` rouge, PR bloquée
 - **U. Démo B : push protection**

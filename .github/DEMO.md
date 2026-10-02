@@ -53,6 +53,8 @@ les mêmes packages et versions, le même style de code et les mêmes types d'er
 | `build.yml` | `build` | compile la solution, binaires en artefact |
 | `tests.yml` | `tests` | compile, lance les tests xUnit, `.trx` en artefact |
 | `dependency-review.yml` | `revue-dependances` | bloque une PR qui ajoute un paquet vulnérable (licence en privé) |
+| `secrets.yml` | `detection-secrets` | Gitleaks sur tout l'historique, règles maison, trouvailles acquittées tracées |
+| `verification-pr.yml` | `issue-liee` | refuse une PR dont la description ne référence aucune issue (Dependabot exempté) |
 | `code-scanning.yml` | `roslyn`, `devskim` | signalement seulement (phase 2), **pas** en contrôle requis |
 
 Workflows séparés : plus lisibles et exigeables un par un, au prix d'une compilation en double (`build` et `tests`).
