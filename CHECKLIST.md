@@ -44,9 +44,10 @@ Légende : `[x]` fait et vérifié, `[ ]` à faire.
   - [x] 7 contrôles verts dès la première exécution
 - **K. Contrôles requis**
   - [x] `build`, `tests`, `revue-dependances` exigés dans le ruleset
-  - [ ] `issue-liee` et `detection-secrets` exigés (après la fusion de la PR de l'issue #19)
+  - [x] `issue-liee` et `detection-secrets` exigés (après la fusion de la PR #20)
+  - [ ] `titre-pr` exigé (après la fusion de la PR de l'issue #23)
 - **L. Démo : PR cassée bloquée**
-  - [ ] PR qui casse `Calcul_Signature` : `tests` rouge, fusion impossible malgré l'approbation
+  - [x] PR #22 (brouillon) : « refactor » d'une ligne qui casse `Calcul_Signature`, build vert, `tests` rouge, fusion impossible
 
 ## Sécurité (jour 4)
 
@@ -73,7 +74,7 @@ Légende : `[x]` fait et vérifié, `[ ]` à faire.
   - [x] `.gitleaksignore` : 2 trouvailles historiques acquittées, décision #17/#18 ; fichiers confiés aux `responsables`
   - [x] Lien vers une issue obligatoire dans chaque PR : job `issue-liee` (cas de la PR #18, `Closes #` sans numéro)
 - **T. Démo A : paquet vulnérable**
-  - [ ] Newtonsoft.Json 12.0.3 sur une branche : `NU1903` au restore, `revue-dependances` rouge, PR bloquée
+  - [x] PR #21 (brouillon) : Newtonsoft.Json 12.0.3, `NU1903` au restore, `build` et `tests` verts, `revue-dependances` rouge, aucune alerte Dependabot
 - **U. Démo B : push protection**
   - [ ] Faux secret au format fournisseur refusé au push ; mot de passe sans marqueur non vu
 - **V. Tri des PR Dependabot**
