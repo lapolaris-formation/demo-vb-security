@@ -93,11 +93,11 @@ Légende : `[x]` fait et vérifié, `[ ]` à faire.
 ## Livraison (jours 4 et 5)
 
 - **X. Version**
-  - [ ] Format `vMAJEUR.MINEUR.CORRECTIF` décidé (actuel : `L_WVOIE_UNI_6_73h`)
-  - [ ] `AssemblyVersion` alignée (actuellement `1.0.0.0`), `CHANGELOG.md` à jour
+  - [x] Format `vMAJEUR.MINEUR.CORRECTIF` décidé (avant : `L_WVOIE_UNI_6_73h`) : première version taguée `v6.73.1`, correctifs depuis 6.73h
+  - [x] `AssemblyVersion` alignée sur le tag par le workflow `release` (6.73.1.0 vérifié sur l'exécutable) ; `CHANGELOG.md` : section 6.73.1
 - **Y. Release**
-  - [ ] Workflow sur tag `v*` : binaire construit depuis le tag, SBOM CycloneDX (+ DLL TwinCAT et Fde ajoutées à la main), attestation de provenance, release
-  - [ ] Tag `v6.73.0` posé, release publiée avec binaire et SBOM
+  - [x] Workflow `release.yml` sur tag `v*` : binaire construit depuis le tag, SBOM CycloneDX du produit (13 paquets + TwinCAT et Fde avec empreinte SHA-256), attestation de provenance, release (issue #32)
+  - [ ] Tag `v6.73.1` posé, release publiée avec binaire et SBOM
   - [ ] Signature horodatée avec certificat de test (à la main, hors pipeline)
 - **Z. Charte et plan**
   - [ ] `docs/charte-git.md` adoptée par PR

@@ -1,6 +1,6 @@
 # CHANGELOG WinVOIE
 
-## Non publié
+## 6.73.1 (03/10/2026)
 
 ### Sécurité
 - Les mots de passe des accès maintenance (paramètres machine, réglage des zéros, configuration mail)
