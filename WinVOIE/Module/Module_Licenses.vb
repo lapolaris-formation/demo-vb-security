@@ -27,8 +27,22 @@ Module Module_Licenses
 
         If fichier = "" Then Return liste
 
+        Return Lire_Licences_Fichier(fichier)
+    End Function
+
+    '-- Lecture sécurisée : DTD interdite, aucune ressource externe résolue (CA3075).
+    '-- Un fichier contenant une DTD lève une XmlException au lieu d'être interprété.
+    Public Function Lire_Licences_Fichier(fichier As String) As List(Of Licence_Librairie)
+        Dim liste As New List(Of Licence_Librairie)
+        Dim parametres As New XmlReaderSettings()
+        parametres.DtdProcessing = DtdProcessing.Prohibit
+        parametres.XmlResolver = Nothing
+
         Dim doc As New XmlDocument()
-        doc.Load(fichier)
+        doc.XmlResolver = Nothing
+        Using lecteur As XmlReader = XmlReader.Create(fichier, parametres)
+            doc.Load(lecteur)
+        End Using
 
         For Each noeud As XmlNode In doc.SelectNodes("//librairie")
             Dim lib_info As New Licence_Librairie
