@@ -10,7 +10,7 @@
         Dim frm_psw As New Frm_MotDePasse
 
         If frm_psw.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            If PSW_saisie = "FERROSUP" Or PSW_saisie = "ferrosup" Or PSW_saisie = "FERROSAV" Or PSW_saisie = "ferrosav" Or PSW_saisie = "FERRODEMO" Or PSW_saisie = "ferrodemo" Then
+            If Mot_De_Passe_Valide(PSW_saisie, {PROFIL_SUPERVISEUR, PROFIL_SAV}) Then
 
                 Return True
             Else
