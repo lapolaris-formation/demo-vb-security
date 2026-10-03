@@ -11,6 +11,12 @@
 - La lecture de `Licenses.xml` refuse les DTD et ne résout aucune ressource externe
   (expansion d'entités, références externes ; règle CA3075).
 
+### Modifié
+- `PdfSharp.Snippets.dll` et `PdfSharp.Quality.dll` ne sont plus livrés : exemples PDFsharp
+  inutilisés, et `PdfSharp.Snippets` exigeait `BouncyCastle.Cryptography`, absent de l'installation.
+- Les redirections de liaison de `WinVOIE.exe.config` sont générées à la compilation, au lieu
+  d'être maintenues à la main dans `app.config`.
+
 ## 6.73h
 - Export PDF des enregistrements travail (PDFsharp 6.2.4)
 - Envoi des enregistrements par mail depuis l'écran impression

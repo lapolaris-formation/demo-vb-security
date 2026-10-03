@@ -83,6 +83,8 @@ Légende : `[x]` fait et vérifié, `[ ]` à faire.
   - [x] Décisions : #4, #5, #6, #11 fermées (migration 10.x à planifier avec PDFsharp) ; #7 à #10 et #12 fermées au profit du regroupement ; #14 (tests seulement, contrôles verts) acceptée
   - [x] `dependabot.yml` : `groups` mineures/correctives, `ignore` des majeures Microsoft.Extensions, Microsoft.Bcl, Pkcs
   - [ ] Issue de migration 8.x → 10.x avec PDFsharp, avant le 10/11/2026
+  - [x] PR #27 (groupée) fermée : `System.Buffers` 4.0.5.0 livré sans redirection, `FileLoadException` prouvée ; #28 et #29 (tests seulement) acceptées
+  - [x] Cause commune de #11 et #27 corrigée (issue #32) : redirections de liaison générées à la compilation ; sonde `.github/outils/VerifierLiaisons.cs` dans le job `build`, qui aurait bloqué les deux PR ; `PdfSharp.Snippets`/`Quality` inutilisés retirés (dépendance BouncyCastle manquante)
 - **W. Tri des alertes Code scanning**
   - [ ] DevSkim « DES » : faux positifs (mot français), *Dismiss → False positive*
   - [x] CA3075 (`XmlDocument.Load`) : corrigé, DTD interdite, 2 tests ; l'ancien code développait une entité interne (issue #30)
