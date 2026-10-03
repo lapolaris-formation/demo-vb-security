@@ -27,3 +27,18 @@ jobs:
             echo "::error::La description doit référencer une issue : « Closes #N » (ou Fixes, Resolves, Refs)."
             exit 1
           fi
+
+  titre-pr:
+    # Le titre devient la 1re ligne du commit de fusion et du changelog (cas de la PR #20 « Ci/19 detection secrets »)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Le titre suit Conventional Commits
+        env:
+          TITRE: ${{ github.event.pull_request.title }}
+        run: |
+          if printf '%s' "$TITRE" | grep -Eq '^(feat|fix|docs|refactor|test|build|ci|chore|perf)(\([^()]+\))?!?: [^ ].*'; then
+            echo "Titre conforme."
+          else
+            echo "::error::Titre attendu : « type(portée): description », types feat, fix, docs, refactor, test, build, ci, chore, perf."
+            exit 1
+          fi

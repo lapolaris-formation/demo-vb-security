@@ -101,12 +101,25 @@ Vérifié en local sur un dossier `packages` vide : 24 paquets restaurés (13 ap
 
 ## 4. Scénarios de démo
 
-### A. PR qui introduit un package vulnérable
-```powershell
-powershell -File .github\demo\creer-branche-newtonsoft-vulnerable.ps1
-```
-Ouvrir la PR vers `main` → **Revue des dépendances** échoue (Newtonsoft.Json 12.0.3, GHSA-5crp-9r3c-p9vr, High)
-et commente la PR. Si on merge quand même → alerte Dependabot + PR de correction automatique.
+### A. PR qui introduit un package vulnérable (jouée : PR #21, brouillon, non fusionnée)
+Branche `demo/newtonsoft-vulnerable`, commit `build(deps): rétrograde Newtonsoft.Json en 12.0.3` :
+`packages.config` et `HintPath`/`Version` du `.vbproj` passés de 13.0.4 à 12.0.3. PR en **brouillon**, description `Refs #2`.
+
+| Contrôle | Résultat |
+|---|---|
+| `revue-dependances` | **rouge** + commentaire « 1 vulnerable package » (GHSA-5crp-9r3c-p9vr, High) |
+| `build` (restauration MSBuild) | vert : `NU1903` dans le journal, **sans annotation** dans la PR |
+| `tests` | vert |
+| Dependabot (Security) | **aucune alerte** : il ne surveille que `main` |
+
+Sans la revue des dépendances, la faille passait dans une PR entièrement verte.
+
+### L. PR qui casse un test (jouée : PR #22, brouillon, non fusionnée)
+Branche `demo/test-casse`, commit `refactor(crc): sort la longueur du texte de la boucle de signature`,
+« aucun changement de comportement attendu » : une ligne, la longueur de la **clé** au lieu de celle du texte.
+Le build est vert, `tests` est **rouge** (`Valeur_modifiee_a_la_main_est_detectee`) : la signature ignore les données,
+un enregistrement falsifié n'est plus détecté.
+À rejouer en séance : passer la PR en « Ready for review » et la faire approuver ; le bouton de fusion reste grisé (revue humaine et contrôle automatique sont deux barrières indépendantes).
 
 ### B. Push protection
 1. Créer un token GitHub (fine-grained, **aucune permission**, expiration 1 jour).
