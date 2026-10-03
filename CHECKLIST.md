@@ -85,7 +85,7 @@ Légende : `[x]` fait et vérifié, `[ ]` à faire.
   - [ ] Issue de migration 8.x → 10.x avec PDFsharp, avant le 10/11/2026
 - **W. Tri des alertes Code scanning**
   - [ ] DevSkim « DES » : faux positifs (mot français), *Dismiss → False positive*
-  - [ ] CA3075 (`XmlDocument.Load`) : corrigé
+  - [x] CA3075 (`XmlDocument.Load`) : corrigé, DTD interdite, 2 tests ; l'ancien code développait une entité interne (issue #30)
   - [ ] CA1031, CA2000 : décision écrite (*Won't fix* ou plan)
 
 ## Livraison (jours 4 et 5)

@@ -66,6 +66,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
     <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
       <HintPath>..\..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
       <Private>True</Private>
@@ -105,6 +106,7 @@
   <ItemGroup>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="Controle_Acces_Tests.vb" />
+    <Compile Include="Module_Licenses_Tests.vb" />
     <Compile Include="Verification_CRC_Tests.vb" />
   </ItemGroup>
   <ItemGroup>
