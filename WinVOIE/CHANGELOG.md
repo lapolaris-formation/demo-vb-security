@@ -8,6 +8,8 @@
   `C:\WVOIE\PARAMETRES\acces.par`, créé à l'installation par le SAV (`outils\creer-acces.ps1`).
 - **Action à l'installation** : sans ce fichier, aucun accès maintenance n'est possible.
 - Les anciens mots de passe sont abandonnés ; les nouveaux distinguent majuscules et minuscules.
+- La lecture de `Licenses.xml` refuse les DTD et ne résout aucune ressource externe
+  (expansion d'entités, références externes ; règle CA3075).
 
 ## 6.73h
 - Export PDF des enregistrements travail (PDFsharp 6.2.4)
