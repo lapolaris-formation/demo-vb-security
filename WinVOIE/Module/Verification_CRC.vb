@@ -56,8 +56,9 @@
         Dim somme As Long = 0
         Dim i As Integer
         Dim texte As String = CLE_SIGNATURE + donnees
+        Dim longueur As Integer = CLE_SIGNATURE.Length   '-- calculée une fois, hors de la boucle
 
-        For i = 0 To texte.Length - 1
+        For i = 0 To longueur - 1
             somme = (somme * 31 + AscW(texte(i))) Mod 2147483647
         Next
 
