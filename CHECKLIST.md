@@ -78,9 +78,11 @@ Légende : `[x]` fait et vérifié, `[ ]` à faire.
 - **U. Démo B : push protection**
   - [ ] Faux secret au format fournisseur refusé au push ; mot de passe sans marqueur non vu
 - **V. Tri des PR Dependabot**
-  - [ ] `@dependabot rebase` pour que les contrôles s'exécutent
-  - [ ] Qualification : `bindingRedirect` figés dans `app.config` (#6, #11), décision écrite dans une issue
-  - [ ] Regroupement des mises à jour mineures et correctives (`groups`)
+  - [x] Qualification écrite dans l'issue #25 : aucune alerte de sécurité, 9 PR NuGet ouvertes avant le pipeline (aucun contrôle), en conflit entre elles
+  - [x] Constat PR #11 : `packages.config` garde Logging.Abstractions 8.0.3, `.vbproj` et `app.config` passent à 10.0.12 ; build vert mais DLL absente de `bin\Release` (export PDF cassé chez le client)
+  - [x] Décisions : #4, #5, #6, #11 fermées (migration 10.x à planifier avec PDFsharp) ; #7 à #10 et #12 fermées au profit du regroupement ; #14 (tests seulement, contrôles verts) acceptée
+  - [x] `dependabot.yml` : `groups` mineures/correctives, `ignore` des majeures Microsoft.Extensions, Microsoft.Bcl, Pkcs
+  - [ ] Issue de migration 8.x → 10.x avec PDFsharp, avant le 10/11/2026
 - **W. Tri des alertes Code scanning**
   - [ ] DevSkim « DES » : faux positifs (mot français), *Dismiss → False positive*
   - [ ] CA3075 (`XmlDocument.Load`) : corrigé
