@@ -16,12 +16,20 @@ updates:
     commit-message:
       prefix: "build"
       include: "scope"
-    # Décommenter pour regrouper les PR (moins de bruit) - à montrer APRÈS avoir vu le volume brut
-    # groups:
-    #   microsoft-extensions:
-    #     patterns: ["Microsoft.Extensions.*", "Microsoft.Bcl.*"]
-    #   system-polyfills:
-    #     patterns: ["System.*"]
+    # Mineures et correctives regroupées en une seule PR ; les majeures restent séparées (jour 4)
+    groups:
+      dependances-mineures:
+        update-types: [ "minor", "patch" ]
+    # Décision de l'issue #25 : la ligne 8.x de ces paquets est figée tant que la migration
+    # vers 10.x n'est pas faite AVEC PDFsharp (la PR #11 livrait un exécutable sans
+    # Microsoft.Extensions.Logging.Abstractions.dll). Échéance : fin de support .NET 8, 10/11/2026.
+    ignore:
+      - dependency-name: "Microsoft.Extensions.*"
+        update-types: [ "version-update:semver-major" ]
+      - dependency-name: "Microsoft.Bcl.*"
+        update-types: [ "version-update:semver-major" ]
+      - dependency-name: "System.Security.Cryptography.Pkcs"
+        update-types: [ "version-update:semver-major" ]
 
   - package-ecosystem: "github-actions"
     directory: "/"
