@@ -97,8 +97,8 @@ Légende : `[x]` fait et vérifié, `[ ]` à faire.
   - [x] `AssemblyVersion` alignée sur le tag par le workflow `release` (6.73.1.0 vérifié sur l'exécutable) ; `CHANGELOG.md` : section 6.73.1
 - **Y. Release**
   - [x] Workflow `release.yml` sur tag `v*` : binaire construit depuis le tag, SBOM CycloneDX du produit (13 paquets + TwinCAT et Fde avec empreinte SHA-256), attestation de provenance, release (issue #32)
-  - [ ] Tag `v6.73.1` posé, release publiée avec binaire et SBOM
+  - [x] Tag `v6.73.1` posé : release « WinVOIE 6.73.1 » publiée par le workflow (non préversion), avec `WinVOIE-6.73.1.zip` et `WinVOIE-6.73.1.cdx.json`
   - [ ] Signature horodatée avec certificat de test (à la main, hors pipeline)
 - **Z. Charte et plan**
-  - [ ] `docs/charte-git.md` adoptée par PR
-  - [ ] Plan d'action CRA daté, responsables nommés
+  - [x] `docs/charte-git.md` adoptée par PR : chaque règle renvoie à une preuve du dépôt
+  - [x] `docs/plan-action-cra.md` daté, responsables nommés : 8 exigences de l'annexe I partie II avec preuve et écart, feuille de route en 4 périodes
