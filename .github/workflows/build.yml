@@ -30,6 +30,20 @@ jobs:
         # Le projet Setup (.vdproj) n'est pas supporté par MSBuild => warning MSB4078 attendu
         run: msbuild WinVOIE.sln -p:Configuration=Release "-p:Platform=Any CPU" -m
 
+      # Un build vert ne prouve pas que l'exécutable démarre : une mise à jour de paquet peut
+      # livrer une DLL absente ou sans redirection de liaison (PR #11 et #27, issue #32).
+      # La sonde charge chaque assembly référencé, avec la configuration réelle de l'exécutable.
+      - name: Vérifier les liaisons des assemblies livrés
+        shell: pwsh
+        run: |
+          $sortie = Join-Path $env:RUNNER_TEMP "liaisons"
+          Copy-Item WinVOIE\bin\Release -Destination $sortie -Recurse
+          Copy-Item WinVOIE\bin\Release\WinVOIE.exe.config (Join-Path $sortie "verifier-liaisons.exe.config")
+          & "$env:WINDIR\Microsoft.NET\Framework64\v4.0.30319\csc.exe" /nologo "/out:$sortie\verifier-liaisons.exe" .github\outils\VerifierLiaisons.cs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & (Join-Path $sortie "verifier-liaisons.exe")
+          exit $LASTEXITCODE
+
       - name: Téléverser les binaires
         uses: actions/upload-artifact@v7
         with:
