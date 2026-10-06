@@ -1,7 +1,9 @@
-# WinVOIE
+﻿# WinVOIE
 
 Logiciel de supervision de machine de travaux de voie (VB.NET, Windows Forms, .NET Framework 4.8).
 Projet **de démonstration** : entreprise fictive FERRODEMO, aucun code client.
+
+> **Avertissement** : la procédure ci-dessous décrit des pratiques techniques recommandées par LaPolaris. Elle ne constitue pas un avis juridique et ne garantit pas la conformité à une réglementation, Cyber Resilience Act compris. Les mentions réglementaires et les informations sur les offres GitHub sont indicatives à la date de rédaction et peuvent évoluer : à vérifier auprès des sources officielles avant toute décision.
 
 ## Compiler
 

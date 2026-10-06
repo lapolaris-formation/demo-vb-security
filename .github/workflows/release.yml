@@ -1,4 +1,4 @@
-name: Release
+﻿name: Release
 
 # Une version livrée = un tag vMAJEUR.MINEUR.CORRECTIF.
 # Binaire, SBOM et attestation de provenance partent du même tag (jours 4 et 5).
@@ -41,6 +41,36 @@ jobs:
 
       - name: Compiler
         run: msbuild WinVOIE\WinVOIE.vbproj -p:Configuration=Release
+
+      # PÉDAGOGIE UNIQUEMENT : certificat auto-signé créé à la volée, non reconnu par Windows.
+      # En production : certificat émis par une AC, clé dans un HSM ou un service de signature.
+      # La signature précède le zip et l'attestation : les empreintes portent sur l'exe signé.
+      - name: Signer WinVOIE.exe avec horodatage (certificat Formation DEMO)
+        shell: pwsh
+        run: |
+          $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject 'CN=Formation DEMO' `
+            -KeyAlgorithm RSA -KeyLength 3072 -HashAlgorithm SHA256 `
+            -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddDays(30)
+          $signtool = Get-ChildItem 'C:\Program Files (x86)\Windows Kits\10\bin\*\x64\signtool.exe' |
+            Sort-Object FullName -Descending | Select-Object -First 1
+          if (-not $signtool) { throw "signtool.exe introuvable sur le runner" }
+          # Horodatage RFC 3161 en HTTP : la réponse est signée par le serveur, TLS n'apporte rien
+          $horodateur = 'http://timestamp.digicert.com' # DevSkim: ignore DS137138
+          # /tr : serveur d'horodatage ; /td : algorithme de l'empreinte horodatée
+          & $signtool.FullName sign /fd SHA256 /sha1 $cert.Thumbprint /s My `
+            /tr $horodateur /td SHA256 /d "WinVOIE" `
+            WinVOIE\bin\Release\WinVOIE.exe
+          if ($LASTEXITCODE -ne 0) { throw "Échec de la signature" }
+
+      - name: Contrôler la signature et l'horodatage
+        shell: pwsh
+        run: |
+          $sig = Get-AuthenticodeSignature WinVOIE\bin\Release\WinVOIE.exe
+          "Signataire : " + $sig.SignerCertificate.Subject
+          "Horodateur : " + $sig.TimeStamperCertificate.Subject
+          "Statut     : " + $sig.Status + " (non Valid attendu : racine auto-signée non approuvée)"
+          if (-not $sig.SignerCertificate) { throw "WinVOIE.exe n'est pas signé" }
+          if (-not $sig.TimeStamperCertificate) { throw "Signature sans horodatage" }
 
       - name: Assembler le livrable
         shell: pwsh
@@ -115,4 +145,4 @@ jobs:
         run: |
           gh release create "$TAG" livraison/* --repo "$GITHUB_REPOSITORY" \
             --title "WinVOIE ${TAG#v}" \
-            --notes "Binaire construit par le pipeline depuis le tag $TAG. SBOM CycloneDX, DLL hors NuGet comprises. Vérifier la provenance : gh attestation verify WinVOIE.exe --owner $GITHUB_REPOSITORY_OWNER. Détail des changements : WinVOIE/CHANGELOG.md."
+            --notes "Binaire construit par le pipeline depuis le tag $TAG. WinVOIE.exe signé (Authenticode, horodatage RFC 3161) avec le certificat de démonstration « Formation DEMO », non approuvé par Windows. SBOM CycloneDX, DLL hors NuGet comprises. Vérifier la provenance : gh attestation verify WinVOIE.exe --owner $GITHUB_REPOSITORY_OWNER. Détail des changements : WinVOIE/CHANGELOG.md."
