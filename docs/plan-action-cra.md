@@ -1,7 +1,9 @@
-# Plan d'action CRA : WinVOIE
+﻿# Plan d'action CRA : WinVOIE
 
 Établi le 03/10/2026 par LaPolaris et ladel1 (dépôt de démonstration, entreprise fictive FERRODEMO)
 Échéance générale de conformité : 11/12/2027. Signalement de l'article 14 applicable depuis le 11/09/2026.
+
+> **Avertissement** : ce document est un support technique établi par LaPolaris. Il ne constitue ni un avis juridique ni une évaluation de conformité au règlement (UE) 2024/2847 (Cyber Resilience Act). La qualification du produit, la procédure d'évaluation et les obligations applicables relèvent de la responsabilité du fabricant, qui doit les faire valider par un juriste ou un organisme compétent. Les références au texte (articles, annexes, échéances) sont indicatives à la date du document : seul le texte publié au Journal officiel de l'Union européenne fait foi.
 
 ## Étape 1 : cartographie des produits
 
