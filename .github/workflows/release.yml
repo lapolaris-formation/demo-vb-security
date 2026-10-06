@@ -54,9 +54,11 @@ jobs:
           $signtool = Get-ChildItem 'C:\Program Files (x86)\Windows Kits\10\bin\*\x64\signtool.exe' |
             Sort-Object FullName -Descending | Select-Object -First 1
           if (-not $signtool) { throw "signtool.exe introuvable sur le runner" }
-          # /tr : serveur d'horodatage RFC 3161 ; /td : algorithme de l'empreinte horodatée
+          # Horodatage RFC 3161 en HTTP : la réponse est signée par le serveur, TLS n'apporte rien
+          $horodateur = 'http://timestamp.digicert.com' # DevSkim: ignore DS137138
+          # /tr : serveur d'horodatage ; /td : algorithme de l'empreinte horodatée
           & $signtool.FullName sign /fd SHA256 /sha1 $cert.Thumbprint /s My `
-            /tr http://timestamp.digicert.com /td SHA256 /d "WinVOIE" `
+            /tr $horodateur /td SHA256 /d "WinVOIE" `
             WinVOIE\bin\Release\WinVOIE.exe
           if ($LASTEXITCODE -ne 0) { throw "Échec de la signature" }
 
