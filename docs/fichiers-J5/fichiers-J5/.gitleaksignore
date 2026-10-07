@@ -1,0 +1,3 @@
+# Trouvailles historiques acquittées : chaque ligne renvoie à sa décision.
+# Ne JAMAIS ajouter une trouvaille sans issue ni décision écrite.
+# Format, donné par Gitleaks à la ligne « Fingerprint » : commit:fichier:règle:ligne

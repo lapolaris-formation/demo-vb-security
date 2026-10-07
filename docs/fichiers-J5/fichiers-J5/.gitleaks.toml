@@ -1,0 +1,14 @@
+# Règles de détection de secrets, en plus des règles par défaut de Gitleaks.
+# À ENREGISTRER EN UTF-8 SANS BOM : avec BOM, Gitleaks refuse le fichier (« invalid character at start of key »).
+# Toute nouvelle règle se teste sur des exemples positifs ET négatifs avant d'être rendue bloquante.
+
+[extend]
+useDefault = true
+
+# Mot de passe dans une chaîne de connexion (règle du jour 4)
+[[rules]]
+id = "mot-de-passe-chaine-connexion"
+description = "Mot de passe dans une chaîne de connexion"
+regex = '''(?i)(?:^|[;"'])\s*(?:password|pwd)\s*=\s*([^;"'\s]{6,})\s*[;"']'''
+secretGroup = 1
+keywords = ["password", "pwd"]

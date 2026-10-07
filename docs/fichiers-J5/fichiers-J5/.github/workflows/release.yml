@@ -1,0 +1,148 @@
+name: Release
+
+# Une version livrée = un tag vMAJEUR.MINEUR.CORRECTIF.
+# Binaire, SBOM et attestation de provenance partent du même tag (jours 4 et 5).
+on:
+  push:
+    tags: [ 'v*' ]
+
+permissions:
+  contents: read
+
+jobs:
+  binaire:
+    # .NET Framework 4.8 : compilation MSBuild sur Windows
+    runs-on: windows-latest
+    permissions:
+      contents: read
+      id-token: write        # identité du workflow, qui signe l'attestation
+      attestations: write
+    env:
+      TAG: ${{ github.ref_name }}
+    steps:
+      - name: Récupérer le code du tag
+        uses: actions/checkout@v7
+
+      - name: Installer MSBuild
+        uses: microsoft/setup-msbuild@v3
+
+      - name: Aligner la version de l'assembly sur le tag
+        shell: pwsh
+        run: |
+          $version = $env:TAG.TrimStart('v')
+          if ($version -notmatch '^\d+\.\d+\.\d+$') { throw "Tag attendu : vMAJEUR.MINEUR.CORRECTIF, reçu : $env:TAG" }
+          $fichier = Join-Path $PWD 'WinVOIE\My Project\AssemblyInfo.vb'
+          $texte = [IO.File]::ReadAllText($fichier) -replace 'Assembly(File)?Version\("[^"]*"\)', ('Assembly$1Version("' + $version + '.0")')
+          [IO.File]::WriteAllText($fichier, $texte, (New-Object System.Text.UTF8Encoding($true)))
+          Select-String -Path $fichier -Pattern '^<Assembly: Assembly(File)?Version'
+
+      - name: Restaurer les paquets (packages.config)
+        run: msbuild WinVOIE.sln -t:restore -p:RestorePackagesConfig=true
+
+      - name: Compiler
+        run: msbuild WinVOIE\WinVOIE.vbproj -p:Configuration=Release
+
+      # PÉDAGOGIE UNIQUEMENT : certificat auto-signé créé à la volée, non reconnu par Windows.
+      # En production : certificat émis par une AC, clé dans un HSM ou un service de signature.
+      # La signature précède le zip et l'attestation : les empreintes portent sur l'exe signé.
+      - name: Signer WinVOIE.exe avec horodatage (certificat Formation DEMO)
+        shell: pwsh
+        run: |
+          $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject 'CN=Formation DEMO' `
+            -KeyAlgorithm RSA -KeyLength 3072 -HashAlgorithm SHA256 `
+            -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddDays(30)
+          $signtool = Get-ChildItem 'C:\Program Files (x86)\Windows Kits\10\bin\*\x64\signtool.exe' |
+            Sort-Object FullName -Descending | Select-Object -First 1
+          if (-not $signtool) { throw "signtool.exe introuvable sur le runner" }
+          # Horodatage RFC 3161 en HTTP : la réponse est signée par le serveur, TLS n'apporte rien
+          $horodateur = 'http://timestamp.digicert.com' # DevSkim: ignore DS137138
+          # /tr : serveur d'horodatage ; /td : algorithme de l'empreinte horodatée
+          & $signtool.FullName sign /fd SHA256 /sha1 $cert.Thumbprint /s My `
+            /tr $horodateur /td SHA256 /d "WinVOIE" `
+            WinVOIE\bin\Release\WinVOIE.exe
+          if ($LASTEXITCODE -ne 0) { throw "Échec de la signature" }
+
+      - name: Contrôler la signature et l'horodatage
+        shell: pwsh
+        run: |
+          $sig = Get-AuthenticodeSignature WinVOIE\bin\Release\WinVOIE.exe
+          "Signataire : " + $sig.SignerCertificate.Subject
+          "Horodateur : " + $sig.TimeStamperCertificate.Subject
+          "Statut     : " + $sig.Status + " (non Valid attendu : racine auto-signée non approuvée)"
+          if (-not $sig.SignerCertificate) { throw "WinVOIE.exe n'est pas signé" }
+          if (-not $sig.TimeStamperCertificate) { throw "Signature sans horodatage" }
+
+      - name: Assembler le livrable
+        shell: pwsh
+        run: |
+          $version = $env:TAG.TrimStart('v')
+          New-Item -ItemType Directory -Force livrable | Out-Null
+          Get-ChildItem WinVOIE\bin\Release -Exclude *.pdb, *.xml |
+            Compress-Archive -DestinationPath "livrable\WinVOIE-$version.zip"
+          "Version de WinVOIE.exe : " + (Get-Item WinVOIE\bin\Release\WinVOIE.exe).VersionInfo.FileVersion
+
+      - name: Générer l'attestation de provenance
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: |
+            WinVOIE/bin/Release/WinVOIE.exe
+            livrable/WinVOIE-*.zip
+
+      - name: Conserver le livrable
+        uses: actions/upload-artifact@v7
+        with:
+          name: livrable
+          path: livrable/
+          retention-days: 90
+
+  sbom:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.ref_name }}
+    steps:
+      - name: Récupérer le code du tag
+        uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Installer CycloneDX
+        run: dotnet tool install --global CycloneDX --version 6.2.0
+
+      # SBOM du PRODUIT (pas de la solution) : sans composants de tests, nom et version du tag
+      - name: Générer le SBOM du produit
+        run: |
+          VERSION="${TAG#v}"
+          dotnet CycloneDX WinVOIE/WinVOIE.vbproj -o sbom -F Json -sn WinVOIE -sv "$VERSION"
+          python3 .github/outils/sbom-hors-nuget.py sbom/bom.json WinVOIE/dll
+          mv sbom/bom.json "sbom/WinVOIE-$VERSION.cdx.json"
+
+      - name: Conserver le SBOM
+        uses: actions/upload-artifact@v7
+        with:
+          name: sbom
+          path: sbom/
+          retention-days: 90
+
+  publication:
+    needs: [ binaire, sbom ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write        # créer la release et y attacher les fichiers
+    env:
+      TAG: ${{ github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Récupérer le livrable et le SBOM
+        uses: actions/download-artifact@v8
+        with:
+          path: livraison
+          merge-multiple: true
+
+      # La release n'expire pas, contrairement aux artefacts (90 jours) : c'est elle qui archive la version
+      - name: Créer la release
+        run: |
+          gh release create "$TAG" livraison/* --repo "$GITHUB_REPOSITORY" \
+            --title "WinVOIE ${TAG#v}" \
+            --notes "Binaire construit par le pipeline depuis le tag $TAG. WinVOIE.exe signé (Authenticode, horodatage RFC 3161) avec le certificat de démonstration « Formation DEMO », non approuvé par Windows. SBOM CycloneDX, DLL hors NuGet comprises. Vérifier la provenance : gh attestation verify WinVOIE.exe --owner $GITHUB_REPOSITORY_OWNER. Détail des changements : WinVOIE/CHANGELOG.md."

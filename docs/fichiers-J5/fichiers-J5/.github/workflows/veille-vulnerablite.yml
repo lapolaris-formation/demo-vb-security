@@ -1,0 +1,30 @@
+﻿name: Veille vulnerabilites
+
+on:
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 6 * * 1'   # lundi 6h UTC (8h a Paris en ete, 7h en hiver)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  veille:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: microsoft/setup-msbuild@v2
+
+      - name: Liste des solutions
+        shell: pwsh
+        run: Get-ChildItem -Recurse -Filter *.sln | Select-Object FullName
+
+      - name: Croisement KEV, EUVD, CERT-FR et EPSS
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./.github/outils/kev-check.ps1
